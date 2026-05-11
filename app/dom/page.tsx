@@ -238,6 +238,12 @@ export default function DomPage() {
             >
               ← УЈП
             </Link>
+            <Link
+              href="/mon"
+              className="text-xs text-gray-400 hover:text-gray-600"
+            >
+              МОН →
+            </Link>
             <WalletButton />
           </div>
         </div>
