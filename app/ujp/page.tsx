@@ -14,6 +14,25 @@ const MEMO_PROGRAM = new PublicKey(
   "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
 );
 
+interface ParentFormData {
+  tatkoIme?: string;
+  tatkoPrezime?: string;
+  tatkoEmbg?: string;
+  tatkoStatus?: string;
+  tatkoPlata?: string;
+  majkaIme?: string;
+  majkaPrezime?: string;
+  majkaEmbg?: string;
+  majkaStatus?: string;
+  majkaPlata?: string;
+  drugiPrimanja?: string;
+  ime?: string;
+  prezime?: string;
+  embg?: string;
+  fakultet?: string;
+  univerzitet?: string;
+}
+
 interface Application {
   id: string;
   hash: string;
@@ -31,6 +50,7 @@ interface Application {
   dvajcaNeraboteni: boolean;
   documents: { name: string; fileName: string }[];
   submittedAt: string;
+  formData?: ParentFormData;
   ujpVerified?: boolean;
   ujpNote?: string;
   ujpTxSig?: string;
@@ -286,23 +306,164 @@ export default function UJPPage() {
                   </div>
 
                   {/* Financial data visible to УЈП */}
-                  <div className="grid grid-cols-3 gap-4 px-5 py-4">
-                    <div>
-                      <p className="text-xs text-gray-400">Месечен приход</p>
-                      <p className="mt-0.5 text-sm font-semibold text-gray-800">
+                  <div className="divide-y divide-gray-100 px-5 py-3">
+                    {/* Candidate row */}
+                    <div className="grid grid-cols-[1fr_auto] gap-2 py-2.5">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-wide text-indigo-600">
+                          Кандидат
+                        </p>
+                        <p className="mt-0.5 text-sm font-medium text-gray-800">
+                          {app.formData?.ime || "—"}{" "}
+                          {app.formData?.prezime || ""}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          ЕМБГ:{" "}
+                          <span className="font-mono">
+                            {app.formData?.embg || "—"}
+                          </span>
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {app.formData?.fakultet || "—"} ·{" "}
+                          {app.formData?.univerzitet || "—"}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs text-gray-400">
+                          Членови / По член
+                        </p>
+                        <p className="mt-0.5 text-sm font-semibold text-gray-800">
+                          {app.members}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {fmt(
+                            Math.round(app.income / Math.max(app.members, 1)),
+                          )}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Father row */}
+                    {app.formData?.tatkoStatus !== "pochinат" && (
+                      <div className="grid grid-cols-[1fr_auto] gap-2 py-2.5">
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                            Татко-старател
+                          </p>
+                          <p className="mt-0.5 text-sm font-medium text-gray-800">
+                            {app.formData?.tatkoIme || "—"}{" "}
+                            {app.formData?.tatkoPrezime || ""}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            ЕМБГ:{" "}
+                            <span className="font-mono">
+                              {app.formData?.tatkoEmbg || "—"}
+                            </span>
+                          </p>
+                          {app.formData?.tatkoStatus &&
+                            app.formData.tatkoStatus !== "" && (
+                              <p className="mt-0.5 text-xs text-amber-600">
+                                ⚠{" "}
+                                {app.formData.tatkoStatus === "nevraboten" &&
+                                  "Невработен"}
+                                {app.formData.tatkoStatus === "nadomeshtok" &&
+                                  "Надоместок – престан на работен однос"}
+                              </p>
+                            )}
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xs text-gray-400">
+                            Пријавена плата
+                          </p>
+                          <p className="mt-0.5 text-sm font-semibold text-gray-800">
+                            {app.formData?.tatkoPlata
+                              ? fmt(Number(app.formData.tatkoPlata))
+                              : "—"}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    {app.formData?.tatkoStatus === "pochinат" && (
+                      <div className="py-2.5">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                          Татко-старател
+                        </p>
+                        <p className="mt-0.5 text-sm text-gray-400 italic">
+                          Починат — нема приход
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Mother row */}
+                    {app.formData?.majkaStatus !== "pochinata" && (
+                      <div className="grid grid-cols-[1fr_auto] gap-2 py-2.5">
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                            Мајка-старател
+                          </p>
+                          <p className="mt-0.5 text-sm font-medium text-gray-800">
+                            {app.formData?.majkaIme || "—"}{" "}
+                            {app.formData?.majkaPrezime || ""}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            ЕМБГ:{" "}
+                            <span className="font-mono">
+                              {app.formData?.majkaEmbg || "—"}
+                            </span>
+                          </p>
+                          {app.formData?.majkaStatus &&
+                            app.formData.majkaStatus !== "" && (
+                              <p className="mt-0.5 text-xs text-amber-600">
+                                ⚠{" "}
+                                {app.formData.majkaStatus === "nevrabotena" &&
+                                  "Невработена"}
+                                {app.formData.majkaStatus === "nadomeshtok" &&
+                                  "Надоместок – престан на работен однос"}
+                              </p>
+                            )}
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xs text-gray-400">
+                            Пријавена плата
+                          </p>
+                          <p className="mt-0.5 text-sm font-semibold text-gray-800">
+                            {app.formData?.majkaPlata
+                              ? fmt(Number(app.formData.majkaPlata))
+                              : "—"}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    {app.formData?.majkaStatus === "pochinata" && (
+                      <div className="py-2.5">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                          Мајка-старател
+                        </p>
+                        <p className="mt-0.5 text-sm text-gray-400 italic">
+                          Почината — нема приход
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Other income + total */}
+                    <div className="grid grid-cols-[1fr_auto] gap-2 py-2.5">
+                      <div>
+                        <p className="text-xs text-gray-400">Други примања</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm text-gray-700">
+                          {app.formData?.drugiPrimanja
+                            ? fmt(Number(app.formData.drugiPrimanja))
+                            : "—"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-[1fr_auto] gap-2 pt-2.5">
+                      <p className="text-xs font-bold uppercase tracking-wide text-gray-700">
+                        Вкупно за верификација
+                      </p>
+                      <p className="text-right text-sm font-bold text-indigo-700">
                         {fmt(app.income)}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-400">Членови</p>
-                      <p className="mt-0.5 text-sm font-semibold text-gray-800">
-                        {app.members}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-400">По член</p>
-                      <p className="mt-0.5 text-sm font-semibold text-gray-800">
-                        {fmt(Math.round(app.income / Math.max(app.members, 1)))}
                       </p>
                     </div>
                   </div>
