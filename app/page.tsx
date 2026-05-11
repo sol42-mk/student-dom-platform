@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { WalletButton } from "./components/WalletButton";
 import {
   Transaction,
   TransactionInstruction,
@@ -260,6 +260,22 @@ export default function Home() {
       );
       setTxSig(sig);
 
+      // Convert PDFs to base64 so /dom can preview them
+      const toBase64 = (file: File): Promise<string> =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      const docsWithData = await Promise.all(
+        files.map(async (f) => ({
+          name: f.name,
+          fileName: f.name,
+          dataUrl: await toBase64(f),
+        })),
+      );
+
       // Save to localStorage for /ujp, /dom, /mon pages
       const application = {
         id: publicKey.toBase58(),
@@ -276,7 +292,7 @@ export default function Home() {
         pocinaleDvajcaRoditeli: form.pocinaleDvajcaRoditeli,
         liceSoPoprecenost: form.liceSoPoprecenost,
         dvajcaNeraboteni: form.dvajcaNeraboteni,
-        documents: files.map((f) => ({ name: f.name, fileName: f.name })),
+        documents: docsWithData,
         submittedAt: new Date().toISOString(),
       };
       const existing = JSON.parse(localStorage.getItem("applications") ?? "[]");
@@ -413,7 +429,7 @@ export default function Home() {
             </h1>
             <p className="text-xs text-gray-400">Академска 2026/27 · DEMO</p>
           </div>
-          <WalletMultiButton />
+          <WalletButton />
         </div>
       </header>
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { WalletButton } from "../components/WalletButton";
 import {
   Transaction,
   TransactionInstruction,
@@ -190,7 +190,7 @@ export default function UJPPage() {
             >
               ← Студент
             </Link>
-            <WalletMultiButton />
+            <WalletButton />
           </div>
         </div>
       </header>
