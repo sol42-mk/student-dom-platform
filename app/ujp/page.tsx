@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
-import { WalletButton } from "../components/WalletButton";
 import {
   Transaction,
   TransactionInstruction,
@@ -187,34 +186,6 @@ export default function UJPPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="border-b border-gray-200 bg-white px-6 py-4">
-        <div className="mx-auto flex max-w-3xl items-center justify-between">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="rounded-md bg-blue-600 px-2 py-0.5 text-xs font-bold text-white">
-                УЈП
-              </span>
-              <h1 className="text-base font-bold text-gray-900">
-                Управа за јавни приходи — Верификација
-              </h1>
-            </div>
-            <p className="mt-0.5 text-xs text-gray-400">
-              Верификација на финансиски податоци · DEMO
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link
-              href="/"
-              className="text-xs text-gray-400 hover:text-gray-600"
-            >
-              ← Студент
-            </Link>
-            <WalletButton />
-          </div>
-        </div>
-      </header>
-
       <div className="mx-auto mt-6 max-w-3xl px-4 pb-16">
         {/* Wallet warning */}
         {!publicKey && (

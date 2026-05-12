@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from "react";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
-import { WalletButton } from "./components/WalletButton";
 import {
   Transaction,
   TransactionInstruction,
@@ -648,18 +647,6 @@ export default function Home() {
   // ── Form ────────────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="border-b border-gray-200 bg-white px-6 py-4">
-        <div className="mx-auto flex max-w-2xl items-center justify-between">
-          <div>
-            <h1 className="text-base font-bold text-gray-900">
-              Studentski Dom - Prijava
-            </h1>
-            <p className="text-xs text-gray-400">Akademska 2026/27 · DEMO</p>
-          </div>
-          <WalletButton />
-        </div>
-      </header>
-
       <div className="mx-auto mt-5 max-w-2xl px-4">
         {!publicKey ? (
           <div className="flex items-center gap-2.5 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">

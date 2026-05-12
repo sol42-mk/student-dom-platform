@@ -7,7 +7,6 @@ import {
   TransactionInstruction,
   PublicKey,
 } from "@solana/web3.js";
-import { WalletButton } from "../components/WalletButton";
 
 const MEMO_PROGRAM = new PublicKey(
   "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
@@ -139,44 +138,7 @@ export default function MonPage() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="border-b border-gray-200 bg-white shadow-sm">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
-          <div>
-            <p className="text-xs font-medium tracking-widest text-indigo-500 uppercase">
-              МОН — Министерство за образование
-            </p>
-            <h1 className="mt-0.5 text-xl font-bold text-gray-900">
-              Анонимна ранг листа
-            </h1>
-          </div>
-          <WalletButton />
-        </div>
-      </header>
-
       <div className="mx-auto max-w-4xl space-y-6 px-6 py-8">
-        {/* Nav */}
-        <nav className="flex gap-2 text-xs font-medium">
-          {[
-            { label: "Студент", href: "/" },
-            { label: "УЈП", href: "/ujp" },
-            { label: "Студентски дом", href: "/dom" },
-            { label: "МОН", href: "/mon" },
-          ].map(({ label, href }) => (
-            <a
-              key={href}
-              href={href}
-              className={`rounded-full px-3 py-1 transition ${
-                href === "/mon"
-                  ? "bg-indigo-600 text-white"
-                  : "bg-white text-gray-500 border border-gray-200 hover:bg-gray-50"
-              }`}
-            >
-              {label}
-            </a>
-          ))}
-        </nav>
-
         {/* Status bar */}
         <div className="grid grid-cols-3 gap-4">
           {[
